@@ -10,7 +10,7 @@ class TablesController < ApplicationController
 
     # Get current Manila time
     manila_now = Time.now.in_time_zone("Asia/Manila")
-    
+
     # Default to Manila date
     @today_date = manila_now.to_date
     @selected_date = params[:date].present? ? Date.parse(params[:date]) : @today_date
@@ -18,7 +18,7 @@ class TablesController < ApplicationController
     # Use timezone-aware range query
     day_start = @selected_date.beginning_of_day
     day_end = @selected_date.end_of_day
-    
+
     @tables = Table.where(start_time: day_start..day_end).order(:start_time)
 
     # Filter past slots if strictly viewing today
