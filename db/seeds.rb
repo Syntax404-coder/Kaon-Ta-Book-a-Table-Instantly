@@ -19,8 +19,12 @@ if User.count == 0
   puts "Seeded: Default users created"
 end
 
-# Wipe all existing slots
-Table.destroy_all
+# Wipe all existing slots (only in development/test)
+if Rails.env.development? || Rails.env.test?
+  Table.destroy_all
+else
+  puts "Skipping Table.destroy_all in production - run manually if needed"
+end
 
 # Operating Hours (Manila Time)
 # Breakfast: 7, 8, 9, 10
