@@ -22,6 +22,8 @@ class UiConsistencyTest < ApplicationSystemTestCase
     fill_in "password", with: "password123"
     click_button "Login"
 
+    # Wait for Turbo navigation to complete by checking we left the login page
+    assert_no_selector "h1", text: "Login"
     assert_text "Logged in"
 
     # Verify customer navigation elements
