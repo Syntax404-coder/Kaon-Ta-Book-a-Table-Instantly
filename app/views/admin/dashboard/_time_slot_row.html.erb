@@ -16,7 +16,8 @@
      <% elsif table.is_closed %>
         <%= button_to "Open Slot", admin_toggle_table_path(table), method: :patch, class: "btn btn-success" %>
      <% else %>
-        <%= button_to "Close Slot", admin_toggle_table_path(table), method: :patch, class: "btn btn-danger", data: { turbo_confirm: "Are you sure you want to close this slot?" } %>
+        <%= link_to "Edit", edit_admin_table_path(table), class: "btn btn-warning", style: "margin-right: 5px;" %>
+        <%= button_to "Close Slot", admin_toggle_table_path(table), method: :patch, class: "btn btn-danger", style: "display:inline-block;", data: { turbo_confirm: "Are you sure you want to close this slot?" } %>
      <% end %>
   </td>
 </tr>

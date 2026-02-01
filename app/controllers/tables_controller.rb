@@ -10,6 +10,10 @@ class TablesController < ApplicationController
 
     # Get current Manila time
     manila_now = Time.now.in_time_zone("Asia/Manila")
+    
+    # Create a cutoff time that matches the stored UTC format but represents Manila time
+    # This is "Now" in the database's timeline
+    @db_now = Time.utc(manila_now.year, manila_now.month, manila_now.day, manila_now.hour, manila_now.min, manila_now.sec)
 
     # Default to Manila date
     @today_date = manila_now.to_date
@@ -23,10 +27,7 @@ class TablesController < ApplicationController
 
     # Filter past slots if strictly viewing today
     if @selected_date == @today_date
-      # Create a cutoff time that matches the stored UTC format but represents Manila time
-      # e.g., if Manila is 18:00, we want to hide slots < 18:00 stored as UTC
-      cutoff_time = Time.utc(manila_now.year, manila_now.month, manila_now.day, manila_now.hour, manila_now.min, manila_now.sec)
-      @tables = @tables.where("start_time > ?", cutoff_time)
+      @tables = @tables.where("start_time > ?", @db_now)
     end
   end
 end

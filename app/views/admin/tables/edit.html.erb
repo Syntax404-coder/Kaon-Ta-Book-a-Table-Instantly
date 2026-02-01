@@ -1,0 +1,31 @@
+<h1>Edit Time Slot Capacity</h1>
+<p>
+  <strong>Time:</strong> <%= @table.start_time.strftime("%H:%M") %><br>
+  <strong>Date:</strong> <%= @table.start_time.strftime("%B %d, %Y") %>
+</p>
+
+<%= form_with(model: [:admin, @table], local: true) do |f| %>
+  <% if @table.errors.any? %>
+    <div style="color: red; margin-bottom: 20px;">
+      <ul>
+        <% @table.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div style="margin-bottom: 20px;">
+    <%= f.label :capacity, "Total Capacity (Seats)" %>
+    <%= f.number_field :capacity, min: 1, class: "form-control" %>
+    <p style="font-size: 0.9em; color: gray;">
+      Note: Changing capacity will automatically update the "Available Seats" count.
+      You cannot reduce capacity below the number of currently booked guests.
+    </p>
+  </div>
+
+  <div>
+    <%= f.submit "Update Capacity", class: "btn btn-primary" %>
+    <%= link_to "Cancel", admin_dashboard_path, class: "btn btn-secondary" %>
+  </div>
+<% end %>
