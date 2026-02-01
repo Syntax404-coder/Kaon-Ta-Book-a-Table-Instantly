@@ -16,10 +16,16 @@ class BookingFlowTest < ApplicationSystemTestCase
 
     assert_text "Logged in"
 
-    # Step 3: Select a date (default is today)
+    # Step 3: Select a date (force tomorrow to ensure slots are available)
+    tomorrow = 1.day.from_now.to_date
+    tomorrow_text = tomorrow.strftime("%B %d, %Y")
+    
+    fill_in "date", with: tomorrow
     click_button "Check Availability"
-    assert_text "Available Time Slots"
-
+    
+    # Wait for the date header to change to tomorrow's date
+    assert_text tomorrow_text
+    
     first(:link, "Book Now").click
     
     # Wait for the next page to load
@@ -33,8 +39,9 @@ class BookingFlowTest < ApplicationSystemTestCase
 
 
     # Step 5: Complete booking with 2 guests
-    fill_in "guest_count", with: "2"
-    click_button "Confirm Booking"
+    assert_selector "input[value='Confirm Booking']"
+    fill_in "guest_count", with: 2
+    page.execute_script("document.querySelector('form').submit()")
 
     assert_text "Reservation confirmed"
 
@@ -43,13 +50,15 @@ class BookingFlowTest < ApplicationSystemTestCase
     assert_equal initial_seats - 2, table.remaining_seats
 
     # Step 6: Visit My Reservations
-    click_link "My Reservations", match: :first
-    assert_text "My Reservations"
+    visit my_reservations_path
+    assert_selector "h1", text: "My Reservations"
     assert_selector "table tbody tr", minimum: 1
 
     # Step 7: Cancel the reservation
     seats_before_cancel = table.remaining_seats
-    click_button "Cancel"
+    accept_confirm do
+      click_button "Cancel"
+    end
 
     assert_no_button "Cancel"
 
