@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_01_153000) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_01_153001) do
   create_table "reservations", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "guest_count"
@@ -34,6 +34,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_01_153000) do
   create_table "tables", force: :cascade do |t|
     t.integer "capacity"
     t.datetime "created_at", null: false
+    t.boolean "is_closed", default: false
     t.integer "remaining_seats"
     t.datetime "start_time"
     t.datetime "updated_at", null: false

@@ -6,6 +6,13 @@ module Admin
       @reservations = Reservation.joins(:table, :user)
                                  .includes(:table, :user)
                                  .order("tables.start_time DESC")
+      @tables = Table.where(start_time: Date.today.all_day).order(:start_time)
+    end
+
+    def toggle_slot
+      @table = Table.find(params[:id])
+      @table.update!(is_closed: !@table.is_closed)
+      redirect_to admin_dashboard_path, notice: "Slot #{@table.is_closed ? 'closed' : 'opened'} successfully."
     end
   end
 end

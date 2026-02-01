@@ -24,3 +24,39 @@
   <p>No reservations in the system.</p>
 <% end %>
 
+<br><hr><br>
+
+<h2>Manage Time Slots (<%= Date.today.strftime("%B %d, %Y") %>)</h2>
+<table border="1" style="width:100%; text-align: left; border-collapse: collapse;">
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Status</th>
+      <th>Remaining Seats</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tables.each do |table| %>
+      <tr>
+        <td><%= table.start_time.strftime("%I:%M %p") %></td>
+        <td>
+          <% if table.is_closed %>
+             <span style="color: red; font-weight: bold;">CLOSED</span>
+          <% else %>
+             <span style="color: green; font-weight: bold;">OPEN</span>
+          <% end %>
+        </td>
+        <td><%= table.remaining_seats %> / <%= table.capacity %></td>
+        <td>
+           <% if table.is_closed %>
+              <%= button_to "Open Slot", toggle_table_admin_path(table), method: :patch, class: "btn btn-success" %>
+           <% else %>
+              <%= button_to "Close Slot", toggle_table_admin_path(table), method: :patch, class: "btn btn-danger", data: { turbo_confirm: "Are you sure you want to close this slot?" } %>
+           <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
