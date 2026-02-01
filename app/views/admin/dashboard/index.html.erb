@@ -50,9 +50,9 @@
         <td><%= table.remaining_seats %> / <%= table.capacity %></td>
         <td>
            <% if table.is_closed %>
-              <%= button_to "Open Slot", toggle_table_admin_path(table), method: :patch, class: "btn btn-success" %>
+              <%= button_to "Open Slot", admin_toggle_table_path(table), method: :patch, class: "btn btn-success" %>
            <% else %>
-              <%= button_to "Close Slot", toggle_table_admin_path(table), method: :patch, class: "btn btn-danger", data: { turbo_confirm: "Are you sure you want to close this slot?" } %>
+              <%= button_to "Close Slot", admin_toggle_table_path(table), method: :patch, class: "btn btn-danger", data: { turbo_confirm: "Are you sure you want to close this slot?" } %>
            <% end %>
         </td>
       </tr>
