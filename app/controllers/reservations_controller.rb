@@ -14,6 +14,7 @@ class ReservationsController < ApplicationController
     )
 
     if @reservation.save
+      ReservationMailer.with(reservation: @reservation).confirmation_email.deliver_later
       redirect_to tables_path, notice: "Reservation confirmed!"
     else
       render :new, status: :unprocessable_entity
