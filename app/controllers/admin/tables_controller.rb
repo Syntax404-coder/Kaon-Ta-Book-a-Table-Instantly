@@ -8,18 +8,18 @@ module Admin
 
     def update
       @table = Table.find(params[:id])
-      
+
       new_capacity = table_params[:capacity].to_i
       old_capacity = @table.capacity
       capacity_difference = new_capacity - old_capacity
-      
+
       # Calculate new remaining seats
       # Current Usage = Old Capacity - Old Remaining
       # New Remaining = New Capacity - Current Usage
       # Algebraic simplification: New Remaining = New Capacity - (Old Capacity - Old Remaining)
       # = New Capacity - Old Capacity + Old Remaining
       # = Difference + Old Remaining
-      
+
       new_remaining_seats = @table.remaining_seats + capacity_difference
 
       if new_remaining_seats < 0

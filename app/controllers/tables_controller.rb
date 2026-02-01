@@ -10,7 +10,7 @@ class TablesController < ApplicationController
 
     # Get current Manila time
     manila_now = Time.now.in_time_zone("Asia/Manila")
-    
+
     # Create a cutoff time that matches the stored UTC format but represents Manila time
     # This is "Now" in the database's timeline
     @db_now = Time.utc(manila_now.year, manila_now.month, manila_now.day, manila_now.hour, manila_now.min, manila_now.sec)

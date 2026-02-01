@@ -5,7 +5,7 @@ module Admin
     def index
       manila_now = Time.now.in_time_zone("Asia/Manila")
       @selected_date = params[:date] ? Date.parse(params[:date]) : manila_now.to_date
-      
+
       # Lazy Generation: Ensure slots exist for the selected date
       TableGenerator.generate_for_date(@selected_date)
 
@@ -20,10 +20,10 @@ module Admin
       # Monthly Calendar Stats
       start_of_month = @selected_date.beginning_of_month
       end_of_month = @selected_date.end_of_month
-      
+
       month_reservations = Reservation.joins(:table)
                                       .where(tables: { start_time: start_of_month.beginning_of_day..end_of_month.end_of_day })
-      
+
       # Sum guest_count instead of just counting reservations
       @daily_counts = month_reservations.to_a.group_by { |r| r.table.start_time.to_date }.transform_values { |reservations| reservations.sum(&:guest_count) }
     end

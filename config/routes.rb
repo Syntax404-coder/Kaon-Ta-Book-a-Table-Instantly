@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   namespace :admin do
     get "dashboard", to: "dashboard#index"
     patch "tables/:id/toggle", to: "dashboard#toggle_slot", as: :toggle_table
-    resources :tables, only: [:edit, :update]
+    resources :tables, only: [ :edit, :update ]
     resources :reservations, only: [ :index, :destroy ]
   end
 
