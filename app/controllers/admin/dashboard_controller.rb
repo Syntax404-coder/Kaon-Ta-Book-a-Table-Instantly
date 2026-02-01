@@ -12,6 +12,15 @@ module Admin
                                  .order("tables.start_time DESC")
 
       @tables = Table.where(start_time: @selected_date.all_day).order(:start_time)
+
+      # Monthly Calendar Stats
+      start_of_month = @selected_date.beginning_of_month
+      end_of_month = @selected_date.end_of_month
+      
+      month_reservations = Reservation.joins(:table)
+                                      .where(tables: { start_time: start_of_month.beginning_of_day..end_of_month.end_of_day })
+      
+      @daily_counts = month_reservations.to_a.group_by { |r| r.table.start_time.to_date }.transform_values(&:count)
     end
 
     def toggle_slot
